@@ -1,10 +1,11 @@
-import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
-import { Message, Participant } from "../../common/types";
+import { Message, Participant, FilterOptions } from "../../common/types";
 
 type ResultGridProps = {
   callHistory: Message[];
   participants: Participant[];
+  filterDetails?: FilterOptions;
 };
 
 const ResultGrid = (props: ResultGridProps) => {
@@ -28,7 +29,24 @@ const ResultGrid = (props: ResultGridProps) => {
   };
 
   return (
-    <div>
+    <div style={{ padding: "10px" }}>
+      {props.filterDetails?.userName !== "" && (
+        <div style={{ marginTop: "20px" }}>
+          <Typography variant="h4" textAlign="left">
+            Call History records for{" "}
+            <span style={{ textTransform: "capitalize" }}>{props.filterDetails?.userName}</span> with{" "}
+            {props.participants
+              .filter((x) => x.name.toUpperCase() !== props.filterDetails?.userName.toUpperCase())
+              .map((x) => x.name)}
+            .
+          </Typography>
+          <Typography variant="h5" textAlign="left">
+            {`Call History range from ${props.filterDetails?.startDate.toLocaleDateString("en-nz")} to
+            ${props.filterDetails?.endDate.toLocaleDateString("en-nz")}`}
+          </Typography>
+        </div>
+      )}
+
       <Table>
         <TableHead>
           <TableRow>
@@ -41,8 +59,8 @@ const ResultGrid = (props: ResultGridProps) => {
         <TableBody>
           {gridData?.map((x) => (
             <TableRow key={`data-${x.timestamp_ms}`}>
-              <TableCell>{new Date(x.timestamp_ms).toLocaleDateString()}</TableCell>
-              <TableCell>{new Date(x.timestamp_ms).toLocaleTimeString()}</TableCell>
+              <TableCell>{new Date(x.timestamp_ms).toLocaleDateString("en-nz")}</TableCell>
+              <TableCell>{new Date(x.timestamp_ms).toLocaleTimeString("en-nz")}</TableCell>
               <TableCell>{x.content}</TableCell>
               <TableCell>{x.call_duration ? convertDurationToTimeFormat(x.call_duration) : ""}</TableCell>
             </TableRow>

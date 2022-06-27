@@ -101,7 +101,7 @@ const App = () => {
   return (
     <div className="App">
       <UserDetail applyFilters={applyFilters} />
-      <ResultGrid callHistory={callHistory ?? []} participants={participants ?? []} />
+      <ResultGrid callHistory={callHistory ?? []} participants={participants ?? []} filterDetails={filters} />
     </div>
   );
 };
