@@ -89,7 +89,7 @@ const App = () => {
               x.timestamp_ms > new Date(filters.startDate).getTime() &&
               x.timestamp_ms < new Date(filters.endDate).getTime()
           )
-          .sort((x) => x.timestamp_ms)
+          .sort((a, b) => a.timestamp_ms - b.timestamp_ms)
       );
     }
   }, [filters]);
